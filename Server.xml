@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root version="2">
+	<Server>
+		<Name>Wowza Streaming Engine</Name>
+		<Description>Wowza Streaming Engine is robust, customizable, and scalable server software that powers reliable streaming of high-quality video and audio to any device, anywhere.</Description>
+		<RESTInterface>
+			<Enable>true</Enable>
+			<IPAddress>*</IPAddress>
+			<Port>8087</Port>
+			<!-- none, basic, digest-->
+			<AuthenticationMethod>digest</AuthenticationMethod>
+			<DiagnosticURLEnable>true</DiagnosticURLEnable>
+			<SSLConfig>
+				<Enable>false</Enable>
+				<KeyStorePath></KeyStorePath>
+				<KeyStorePassword></KeyStorePassword>
+				<KeyStoreType>JKS</KeyStoreType>
+				<SSLProtocol>TLS</SSLProtocol>
+				<Algorithm>SunX509</Algorithm>
+				<CipherSuites></CipherSuites>
+				<Protocols></Protocols>
+			</SSLConfig>
+			<IPWhiteList>127.0.0.1</IPWhiteList>
+			<IPBlackList></IPBlackList>
+			<EnableXMLFile>false</EnableXMLFile>
+			<DocumentationServerEnable>false</DocumentationServerEnable>
+			<DocumentationServerPort>8089</DocumentationServerPort>
+			<!-- none, basic, digest-->
+			<DocumentationServerAuthenticationMethod>digest</DocumentationServerAuthenticationMethod>
+			<Properties>
+			</Properties>
+		</RESTInterface>
+		<CommandInterface>
+			<HostPort>
+				<ProcessorCount>${com.wowza.wms.TuningAuto}</ProcessorCount>
+				<IpAddress>*</IpAddress>
+				<Port>8083</Port>
+			</HostPort>
+		</CommandInterface>
+		<AdminInterface>
+			<!-- Objects exposed through JMX interface: Server, VHost, VHostItem, Application, ApplicationInstance, MediaCaster, Module, Client, MediaStream, SharedObject, Acceptor, IdleWorker -->
+			<ObjectList>Server,VHost,VHostItem,Application,ApplicationInstance,MediaCaster,Module,IdleWorker</ObjectList>
+		</AdminInterface>
+		<Stats>
+			<Enable>true</Enable>
+		</Stats>
+		<!-- JMXUrl: service:jmx:rmi://localhost:8084/jndi/rmi://localhost:8085/jmxrmi -->
+		<JMXRemoteConfiguration>
+			<Enable>false</Enable>
+			<IpAddress>localhost</IpAddress> <!-- set to localhost or internal ip address if behind NAT -->
+			<RMIServerHostName>localhost</RMIServerHostName> <!-- set to external ip address or domain name if behind NAT -->
+			<RMIConnectionPort>8084</RMIConnectionPort>
+			<RMIRegistryPort>8085</RMIRegistryPort>
+			<Authenticate>true</Authenticate>
+			<PasswordFile>${com.wowza.wms.ConfigHome}/conf/jmxremote.password</PasswordFile>
+			<AccessFile>${com.wowza.wms.ConfigHome}/conf/jmxremote.access</AccessFile>
+			<SSLSecure>false</SSLSecure>
+		</JMXRemoteConfiguration>
+		<UserAgents>Shockwave Flash|CFNetwork|MacNetwork/1.0 (Macintosh)</UserAgents>
+		<Streams>
+			<DefaultStreamPrefix>mp4</DefaultStreamPrefix>
+		</Streams>
+		<ServerListeners>
+			<ServerListener>
+			    <BaseClass>com.kaltura.media.server.wowza.listeners.ServerListener</BaseClass>
+			</ServerListener>
+			<!-- 
+			<ServerListener>
+				<BaseClass>com.wowza.wms.plugin.loadbalancer.ServerListenerLoadBalancerListener</BaseClass>
+			</ServerListener>
+			-->
+			<!--
+			<ServerListener>
+				<BaseClass>com.wowza.wms.plugin.loadbalancer.ServerListenerLoadBalancerSender</BaseClass>
+			</ServerListener>
+			-->
+		</ServerListeners>
+		<VHostListeners>
+			<!--
+			<VHostListener>
+				<BaseClass></BaseClass>
+			</VHostListener>
+			-->
+		</VHostListeners> 
+		<HandlerThreadPool>
+			<PoolSize>${com.wowza.wms.TuningAuto}</PoolSize>
+		</HandlerThreadPool>
+		<TransportThreadPool>
+			<PoolSize>${com.wowza.wms.TuningAuto}</PoolSize>
+		</TransportThreadPool>
+		<RTP>
+			<DatagramStartingPort>6970</DatagramStartingPort>
+			<DatagramPortSharing>false</DatagramPortSharing>
+		</RTP>
+		
+		<Manager>
+			<!-- Properties defined are used by the Manager -->
+			<Properties>
+			</Properties>
+		</Manager>
+		
+		<!-- Properties defined here will be added to the IServer.getProperties() collection -->
+		<Properties>
+			<Property>
+			    <Name>KalturaServerURL</Name>
+			    <Value>http://ec2-54-174-189-97.compute-1.amazonaws.com</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura media server partner (-5) admin secret -->
+			    <Name>KalturaServerAdminSecret</Name>
+			    <Value>0b74ae03a4a1af9f671b7ceabe1ccd60</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura API http timeout -->
+			    <Name>KalturaServerTimeout</Name>
+			    <Value>30</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura server managers to be loaded -->
+			    <Name>KalturaServerManagers</Name>
+			    <Value>com.kaltura.media.server.wowza.StatusManager, com.kaltura.media.server.wowza.LiveStreamManager</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura web services to be loaded -->
+			    <Name>KalturaServerWebServices</Name>
+			    <Value>com.kaltura.media.server.api.services.KalturaLiveService</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura server status reporting interval, in seconds -->
+			    <Name>KalturaServerStatusInterval</Name>
+			    <Value>300</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura interval to update that live stream entry is still broadcasting, in seconds -->
+			    <Name>KalturaLiveStreamKeepAliveInterval</Name>
+			    <Value>60</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura maximum DVR window, in seconds, should be 24 hours -->
+			    <Name>KalturaLiveStreamMaxDvrWindow</Name>
+			    <Value>7200</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura maximum recorded chunk duration, in minutes, should be an hour -->
+			    <Name>KalturaRecordedChunckMaxDuration</Name>
+			    <Value>60</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura web services http port -->
+			    <Name>KalturaServerWebServicesPort</Name>
+			    <Value>888</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura web services binding host name -->
+			    <Name>KalturaServerWebServicesHost</Name>
+			    <Value>127.0.0.1</Value>
+			</Property>
+			<Property>
+			    <!-- Kaltura recorded file group -->
+			    <Name>KalturaRecordedFileGroup</Name>
+			    <!-- kaltura (gid = 613) or any other group that apache user is associated with. -->
+			    <Value>kaltura</Value>
+			</Property>
+			<Property>
+			    <!-- Minimum buffering time before registering entry as is-live (in seconds) -->
+			    <Name>KalturaIsLiveRegistrationMinBufferTime</Name>
+			    <Value>60</Value>
+			</Property>
+
+		</Properties>
+	</Server>
+</Root>
